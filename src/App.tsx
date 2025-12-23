@@ -3,27 +3,92 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
+
+// Public/Customer Pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import LoginForm from "./components/auth/LoginForm";
+import RegisterForm from "./components/auth/RegisterForm";
+import MyAccount from "./pages/MyAccount";
+import MyOrders from "./pages/MyOrders";
 
-const queryClient = new QueryClient();
+// Admin Pages
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
+
+// Route Protection
+import ProtectedRoute, { AdminRoute } from "./components/auth/ProtectedRoute";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <CartProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
+              
+              {/* Admin Login (separate from customer login) */}
+              <Route path="/admin/login" element={<LoginForm isAdmin={true} />} />
+              
+              {/* Protected Customer Routes */}
+              <Route path="/my-account" element={
+                <ProtectedRoute requiredRole="customer">
+                  <MyAccount />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/my-orders" element={
+                <ProtectedRoute requiredRole="customer">
+                  <MyOrders />
+                </ProtectedRoute>
+              } />
+              
+              {/* Protected Admin Routes */}
+              <Route path="/admin" element={
+                <AdminRoute>
+                  <AdminLayout />
+                </AdminRoute>
+              }>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="orders" element={<div>Orders Management (Coming Soon)</div>} />
+                <Route path="users" element={<div>Users Management (Coming Soon)</div>} />
+                <Route path="analytics" element={<div>Analytics (Coming Soon)</div>} />
+                <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
+              </Route>
+
+              {/* Legacy route redirect */}
+              <Route path="/account" element={<Navigate to="/my-account" replace />} />
+              
+              {/* 404 Page */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </CartProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

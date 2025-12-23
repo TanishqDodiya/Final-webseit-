@@ -1,73 +1,164 @@
-# Welcome to your Lovable project
+# 🛒 ELYF EVSPARE - E-Commerce Platform
 
-## Project info
+A complete e-commerce solution for electric vehicle spare parts with separate customer and admin interfaces.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 **Quick Start**
 
-## How can I edit this code?
+### **⚠️ Important: Complete Supabase Setup First**
 
-There are several ways of editing your application.
+Before running the application, you need to complete the database setup:
 
-**Use Lovable**
+1. **Get Complete API Key**:
+   - Go to: https://supabase.com/dashboard/project/fqgibdytzciderlfehjz
+   - Settings > API > Copy "anon public" key
+   - Update `.env` with the full key
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+2. **Setup Database**:
+   - Go to SQL Editor in Supabase dashboard
+   - Copy entire content from `setup-supabase.sql`
+   - Paste and run the script
 
-Changes made via Lovable will be committed automatically to this repo.
+3. **Verify Setup**:
+   ```bash
+   node verify-setup.js
+   ```
 
-**Use your preferred IDE**
+4. **Start Application**:
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### **🔗 Access URLs**
+- **Customer Site**: http://localhost:5173/
+- **Admin Panel**: http://localhost:5173/admin/login
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### **🔑 Demo Credentials**
+```
+Admin: admin@elyfevspare.com / admin123
+Customer: customer@example.com / customer123
+```
 
-Follow these steps:
+## 📚 **Documentation**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+- **Setup Guide**: `SUPABASE_INTEGRATION.md`
+- **Setup Status**: `SETUP_STATUS.md`
+- **Authentication**: `AUTHENTICATION_SETUP.md`
+
+## 🎯 **Features**
+
+### **Customer Interface**
+- ✅ Product catalog with categories
+- ✅ Advanced search and filtering
+- ✅ Shopping cart functionality
+- ✅ User registration and login
+- ✅ Order placement and tracking
+
+### **Admin Interface**
+- ✅ Product management (CRUD)
+- ✅ Category management
+- ✅ User management
+- ✅ Order tracking and management
+- ✅ Dashboard with analytics
+
+### **Technical Features**
+- ✅ Supabase integration
+- ✅ JWT authentication
+- ✅ Role-based access control
+- ✅ Real-time database
+- ✅ Responsive design
+- ✅ TypeScript support
+
+## 🛠️ **Development**
+
+### **Local Development**
+
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Complete Supabase setup (see above)
+# Then start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### **Environment Setup**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Create `.env` file with your Supabase credentials:
+```env
+VITE_SUPABASE_PROJECT_ID="fqgibdytzciderlfehjz"
+VITE_SUPABASE_PUBLISHABLE_KEY="your_complete_api_key_here"
+VITE_SUPABASE_URL="https://fqgibdytzciderlfehjz.supabase.co"
+```
 
-**Use GitHub Codespaces**
+## 🏗️ **Tech Stack**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Frontend**: React 18, TypeScript, Vite
+- **UI**: Tailwind CSS, shadcn/ui components
+- **Backend**: Supabase (PostgreSQL, Auth, Real-time)
+- **State**: React Context, Custom hooks
+- **Routing**: React Router v6
+- **Icons**: Lucide React
 
-## What technologies are used for this project?
+## 📁 **Project Structure**
 
-This project is built with:
+```
+src/
+├── components/          # Reusable UI components
+│   ├── admin/          # Admin-specific components
+│   ├── auth/           # Authentication components
+│   └── ui/             # shadcn/ui components
+├── pages/              # Page components
+│   ├── admin/          # Admin dashboard pages
+│   └── Index.tsx       # Customer homepage
+├── services/           # API and business logic
+│   ├── auth.ts         # Authentication service
+│   └── database.ts     # Database operations
+├── context/            # React context providers
+├── hooks/              # Custom React hooks
+├── integrations/       # Third-party integrations
+│   └── supabase/       # Supabase client and types
+└── utils/              # Utility functions
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔧 **Available Scripts**
 
-## How can I deploy this project?
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 🚀 **Deployment**
 
-## Can I connect a custom domain to my Lovable project?
+The application can be deployed to any static hosting service:
 
-Yes, you can!
+- **Vercel**: Connect your GitHub repo
+- **Netlify**: Deploy from Git
+- **Supabase**: Use built-in hosting
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Make sure to set environment variables in your deployment platform.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📞 **Support**
+
+If you encounter issues:
+
+1. Check `SETUP_STATUS.md` for current status
+2. Run `node verify-setup.js` to test connection
+3. Review browser console for errors
+4. Check Supabase dashboard for data
+
+## 🎉 **Success!**
+
+Once setup is complete, you'll have a fully functional e-commerce platform with:
+- Real-time product management
+- Secure user authentication
+- Complete order processing
+- Responsive design for all devices
+
+**Happy coding! 🚀**
