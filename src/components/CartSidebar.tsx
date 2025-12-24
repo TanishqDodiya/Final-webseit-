@@ -4,15 +4,15 @@ import { useCart, CartItem } from '@/context/CartContext';
 import CheckoutModal from './CheckoutModal';
 
 const CartSidebar = () => {
-  const { items, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
+  const { items, updateQuantity, removeFromCart, getTotal, clearCart, isLoading } = useCart();
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     }).format(price);
   };
 
@@ -20,6 +20,27 @@ const CartSidebar = () => {
   const gstRate = 0.18; // 18% GST for most items
   const gst = subtotal * gstRate;
   const total = subtotal + gst;
+
+  if (isLoading) {
+    return (
+      <aside className="w-full lg:w-80 flex-shrink-0 border-l border-border bg-background">
+        <div className="sticky top-20 p-4">
+          <div className="h-6 bg-muted rounded animate-pulse mb-6"></div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 animate-pulse">
+                <div className="w-12 h-12 bg-muted rounded"></div>
+                <div className="flex-1">
+                  <div className="h-3 bg-muted rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-muted rounded w-1/2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -30,7 +51,10 @@ const CartSidebar = () => {
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
               <ShoppingBag className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-muted-foreground text-sm">Cart is empty</p>
+            <p className="text-muted-foreground text-sm text-center">
+              Your cart is empty<br />
+              <span className="text-xs">Add some products to get started</span>
+            </p>
           </div>
         </div>
       </aside>
@@ -44,10 +68,13 @@ const CartSidebar = () => {
           {/* Header */}
           <div className="p-4 border-b border-border">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">Cart</h2>
+              <h2 className="text-lg font-bold text-foreground">
+                Cart ({items.length})
+              </h2>
               <button
                 onClick={clearCart}
-                className="text-xs text-muted-foreground hover:text-destructive transition-colors"
+                className="text-xs text-muted-foreground hover:text-destructive transition-colors touch-target"
+                aria-label="Clear cart"
               >
                 Clear all
               </button>
@@ -55,15 +82,16 @@ const CartSidebar = () => {
           </div>
 
           {/* Items */}
-          <div className="flex-1 overflow-y-auto">
-            {items.map((item) => (
-              <CartItemRow
-                key={item.product.id}
-                item={item}
-                onUpdateQuantity={updateQuantity}
-                onRemove={removeFromCart}
-                formatPrice={formatPrice}
-              />
+          <div className="flex-1 overflow-y-auto scrollbar-hide">
+            {items.map((item, index) => (
+              <div key={item.product.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                <CartItemRow
+                  item={item}
+                  onUpdateQuantity={updateQuantity}
+                  onRemove={removeFromCart}
+                  formatPrice={formatPrice}
+                />
+              </div>
             ))}
           </div>
 
@@ -86,11 +114,16 @@ const CartSidebar = () => {
 
             <button
               onClick={() => setIsCheckoutOpen(true)}
-              className="btn-checkout flex items-center justify-center gap-2"
+              className="btn-checkout flex items-center justify-center gap-2 touch-target"
+              aria-label="Proceed to checkout"
             >
               <MessageCircle className="w-5 h-5" />
-              Proceed to WhatsApp
+              Request Quote
             </button>
+            
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              Get instant quote via WhatsApp
+            </p>
           </div>
         </div>
       </aside>
@@ -111,23 +144,39 @@ interface CartItemRowProps {
 }
 
 const CartItemRow = ({ item, onUpdateQuantity, onRemove, formatPrice }: CartItemRowProps) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleQuantityChange = async (newQuantity: number) => {
+    setIsUpdating(true);
+    try {
+      onUpdateQuantity(item.product.id, newQuantity);
+    } finally {
+      setTimeout(() => setIsUpdating(false), 300);
+    }
+  };
+
   return (
-    <div className="cart-item animate-slide-in">
+    <div className="cart-item group">
       {/* Image */}
       <div className="w-12 h-12 flex-shrink-0 bg-muted rounded overflow-hidden">
         <img
           src={item.product.image}
           alt={item.product.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+          width="48"
+          height="48"
         />
       </div>
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <h4 className="text-xs font-medium text-foreground line-clamp-2 leading-tight">
+        <h4 className="text-xs font-medium text-foreground line-clamp-2 leading-tight mb-1">
           {item.product.name}
         </h4>
-        <p className="text-xs font-semibold text-foreground mt-1">
+        <p className="text-xs text-muted-foreground mb-1">
+          {formatPrice(item.product.price)} × {item.quantity}
+        </p>
+        <p className="text-sm font-semibold text-foreground">
           {formatPrice(item.product.price * item.quantity)}
         </p>
       </div>
@@ -135,15 +184,21 @@ const CartItemRow = ({ item, onUpdateQuantity, onRemove, formatPrice }: CartItem
       {/* Quantity Controls */}
       <div className="flex items-center gap-1">
         <button
-          onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
+          onClick={() => handleQuantityChange(item.quantity - 1)}
+          disabled={isUpdating || item.quantity <= 1}
           className="quantity-btn"
+          aria-label="Decrease quantity"
         >
           <Minus className="w-3 h-3" />
         </button>
-        <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
+        <span className="w-8 text-center text-sm font-medium">
+          {isUpdating ? '...' : item.quantity}
+        </span>
         <button
-          onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
+          onClick={() => handleQuantityChange(item.quantity + 1)}
+          disabled={isUpdating}
           className="quantity-btn"
+          aria-label="Increase quantity"
         >
           <Plus className="w-3 h-3" />
         </button>
@@ -152,7 +207,8 @@ const CartItemRow = ({ item, onUpdateQuantity, onRemove, formatPrice }: CartItem
       {/* Remove */}
       <button
         onClick={() => onRemove(item.product.id)}
-        className="p-1 hover:bg-destructive/10 rounded transition-colors"
+        className="p-1 hover:bg-destructive/10 rounded transition-colors touch-target"
+        aria-label="Remove item"
       >
         <X className="w-4 h-4 text-muted-foreground hover:text-destructive" />
       </button>

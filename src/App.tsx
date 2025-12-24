@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -35,61 +36,73 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
-              
-              {/* Admin Login (separate from customer login) */}
-              <Route path="/admin/login" element={<LoginForm isAdmin={true} />} />
-              
-              {/* Protected Customer Routes */}
-              <Route path="/my-account" element={
-                <ProtectedRoute requiredRole="customer">
-                  <MyAccount />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/my-orders" element={
-                <ProtectedRoute requiredRole="customer">
-                  <MyOrders />
-                </ProtectedRoute>
-              } />
-              
-              {/* Protected Admin Routes */}
-              <Route path="/admin" element={
-                <AdminRoute>
-                  <AdminLayout />
-                </AdminRoute>
-              }>
-                <Route index element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="dashboard" element={<AdminDashboard />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="orders" element={<div>Orders Management (Coming Soon)</div>} />
-                <Route path="users" element={<div>Users Management (Coming Soon)</div>} />
-                <Route path="analytics" element={<div>Analytics (Coming Soon)</div>} />
-                <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
-              </Route>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner 
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: 'hsl(var(--background))',
+                  color: 'hsl(var(--foreground))',
+                  border: '1px solid hsl(var(--border))',
+                },
+              }}
+            />
+            <BrowserRouter>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Index />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegisterForm />} />
+                
+                {/* Admin Login (separate from customer login) */}
+                <Route path="/admin/login" element={<LoginForm isAdmin={true} />} />
+                
+                {/* Protected Customer Routes */}
+                <Route path="/my-account" element={
+                  <ProtectedRoute requiredRole="customer">
+                    <MyAccount />
+                  </ProtectedRoute>
+                } />
+                
+                <Route path="/my-orders" element={
+                  <ProtectedRoute requiredRole="customer">
+                    <MyOrders />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Protected Admin Routes */}
+                <Route path="/admin" element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }>
+                  <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                  <Route path="dashboard" element={<AdminDashboard />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="orders" element={<div>Orders Management (Coming Soon)</div>} />
+                  <Route path="users" element={<div>Users Management (Coming Soon)</div>} />
+                  <Route path="analytics" element={<div>Analytics (Coming Soon)</div>} />
+                  <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
+                </Route>
 
-              {/* Legacy route redirect */}
-              <Route path="/account" element={<Navigate to="/my-account" replace />} />
-              
-              {/* 404 Page */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+                {/* Legacy route redirect */}
+                <Route path="/account" element={<Navigate to="/my-account" replace />} />
+                
+                {/* 404 Page */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

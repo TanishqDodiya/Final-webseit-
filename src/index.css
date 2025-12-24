@@ -1,8 +1,11 @@
+/* stylelint-disable at-rule-no-unknown */
+/* postcss-import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Tailwind CSS directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -72,19 +75,38 @@
 }
 
 @layer base {
+  /* stylelint-disable-next-line at-rule-no-unknown */
   * {
     @apply border-border;
   }
 
+  /* stylelint-disable-next-line at-rule-no-unknown */
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Improve focus visibility for accessibility */
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  /* Better text rendering */
+  h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeLegibility;
   }
 }
 
+/* stylelint-disable at-rule-no-unknown */
 @layer components {
   .category-item {
-    @apply px-4 py-2 text-sm cursor-pointer transition-all duration-200;
+    @apply px-4 py-2 text-sm cursor-pointer transition-all duration-200 min-h-[44px] flex items-center;
   }
 
   .category-item-active {
@@ -96,7 +118,7 @@
   }
 
   .product-card {
-    @apply flex items-start gap-4 p-4 border-b border-border transition-colors hover:bg-muted/50;
+    @apply flex items-start gap-4 p-4 border-b border-border transition-all duration-200;
   }
 
   .cart-item {
@@ -105,16 +127,174 @@
 
   .btn-add-quote {
     @apply px-4 py-2 text-sm font-medium border border-primary text-primary rounded-lg 
-           hover:bg-primary hover:text-primary-foreground transition-colors duration-200;
+           hover:bg-primary hover:text-primary-foreground transition-all duration-200
+           focus:ring-2 focus:ring-primary/20 focus:outline-none
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-checkout {
     @apply w-full py-3 bg-success text-success-foreground font-semibold rounded-lg
-           hover:opacity-90 transition-opacity duration-200;
+           hover:bg-success/90 transition-all duration-200 min-h-[44px]
+           focus:ring-2 focus:ring-success/20 focus:outline-none
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .quantity-btn {
     @apply w-8 h-8 flex items-center justify-center border border-border rounded
-           hover:bg-muted transition-colors text-foreground font-medium;
+           hover:bg-muted transition-all duration-200 text-foreground font-medium
+           focus:ring-2 focus:ring-primary/20 focus:outline-none
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Header improvements */
+  .header-sticky {
+    @apply sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border;
+  }
+
+  /* Loading animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Button hover states */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium
+           hover:bg-primary/90 transition-all duration-200 min-h-[44px]
+           focus:ring-2 focus:ring-primary/20 focus:outline-none
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-lg font-medium
+           hover:bg-secondary/80 transition-all duration-200 min-h-[44px]
+           focus:ring-2 focus:ring-secondary/20 focus:outline-none
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Form improvements */
+  .form-input {
+    @apply w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground
+           focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+           disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px];
+  }
+
+  /* Card improvements */
+  .card {
+    @apply bg-card text-card-foreground rounded-lg border border-border shadow-sm;
+  }
+
+  /* Mobile-first responsive utilities */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Text utilities */
+  .text-hero {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight;
+  }
+
+  .text-subtitle {
+    @apply text-base sm:text-lg text-muted-foreground font-medium;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}
+/* stylelint-enable at-rule-no-unknown */
+
+@layer utilities {
+  /* Custom animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Scroll improvements */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Performance optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Safe area for mobile devices */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }

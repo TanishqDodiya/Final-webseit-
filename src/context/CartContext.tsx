@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Product } from '@/data/products';
+import { toast } from 'sonner';
 
 export interface CartItem {
   product: Product;
@@ -8,35 +9,80 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
   getItemCount: () => number;
+  isLoading: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const CART_STORAGE_KEY = 'elyf-evspare-cart';
+
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const addToCart = useCallback((product: Product) => {
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        setItems(parsedCart);
+      }
+    } catch (error) {
+      console.error('Error loading cart from localStorage:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever items change
+  useEffect(() => {
+    if (!isLoading) {
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+      } catch (error) {
+        console.error('Error saving cart to localStorage:', error);
+      }
+    }
+  }, [items, isLoading]);
+
+  const addToCart = useCallback((product: Product, quantity: number = 1) => {
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.product.id === product.id);
       if (existingItem) {
+        const newQuantity = existingItem.quantity + quantity;
+        toast.success(`Updated ${product.name.slice(0, 30)}... quantity to ${newQuantity}`, {
+          duration: 2000,
+        });
         return prevItems.map(item =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: newQuantity }
             : item
         );
       }
-      return [...prevItems, { product, quantity: 1 }];
+      toast.success(`Added ${product.name.slice(0, 30)}... to cart`, {
+        duration: 2000,
+      });
+      return [...prevItems, { product, quantity }];
     });
   }, []);
 
   const removeFromCart = useCallback((productId: string) => {
-    setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+    setItems(prevItems => {
+      const item = prevItems.find(item => item.product.id === productId);
+      if (item) {
+        toast.success(`Removed ${item.product.name.slice(0, 30)}... from cart`, {
+          duration: 2000,
+        });
+      }
+      return prevItems.filter(item => item.product.id !== productId);
+    });
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
@@ -55,6 +101,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = useCallback(() => {
     setItems([]);
+    toast.success('Cart cleared', { duration: 2000 });
   }, []);
 
   const getTotal = useCallback(() => {
@@ -73,7 +120,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateQuantity,
       clearCart,
       getTotal,
-      getItemCount
+      getItemCount,
+      isLoading
     }}>
       {children}
     </CartContext.Provider>
