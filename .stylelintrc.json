@@ -8,9 +8,10 @@
           "tailwind",
           "apply",
           "variants",
-          "responsive",
+          "responsive", 
           "screen",
-          "layer"
+          "layer",
+          "config"
         ]
       }
     ],
@@ -19,7 +20,19 @@
     "function-no-unknown": [
       true,
       {
-        "ignoreFunctions": ["theme", "screen"]
+        "ignoreFunctions": ["theme", "screen", "config"]
+      }
+    ],
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["content-visibility"]
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
       }
     ]
   }

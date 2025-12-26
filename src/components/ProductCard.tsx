@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Plus, Minus } from 'lucide-react';
 import { Product } from '@/data/products';
 import { useCart } from '@/context/CartContext';
@@ -39,8 +40,11 @@ const ProductCard = ({ product, stock = 10 }: ProductCardProps) => {
 
   return (
     <div className="product-card group hover:bg-muted/30 transition-colors duration-200">
-      {/* Product Image */}
-      <div className="w-20 h-20 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
+      {/* Product Image - Clickable */}
+      <Link 
+        to={`/product/${product.id}`}
+        className="w-20 h-20 flex-shrink-0 bg-muted rounded-lg overflow-hidden block"
+      >
         <img
           src={product.image}
           alt={product.name}
@@ -49,13 +53,19 @@ const ProductCard = ({ product, stock = 10 }: ProductCardProps) => {
           width="80"
           height="80"
         />
-      </div>
+      </Link>
 
       {/* Product Info */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2 mb-1">
-          {product.name}
-        </h3>
+        {/* Product Name - Clickable */}
+        <Link 
+          to={`/product/${product.id}`}
+          className="block"
+        >
+          <h3 className="text-sm font-semibold text-foreground leading-tight line-clamp-2 mb-1 hover:text-primary transition-colors cursor-pointer">
+            {product.name}
+          </h3>
+        </Link>
         <p className="text-xs text-muted-foreground mb-1">
           SKU: {product.sku}
         </p>

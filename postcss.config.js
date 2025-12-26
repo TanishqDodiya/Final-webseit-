@@ -3,5 +3,4 @@ export default {
     tailwindcss: {},
     autoprefixer: {},
   },
-  parser: 'postcss-scss',
 };

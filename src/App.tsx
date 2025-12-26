@@ -1,4 +1,3 @@
-import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 
 // Public/Customer Pages
 import Index from "./pages/Index";
+import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
@@ -20,6 +20,10 @@ import MyOrders from "./pages/MyOrders";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 // Route Protection
 import ProtectedRoute, { AdminRoute } from "./components/auth/ProtectedRoute";
@@ -57,6 +61,7 @@ const App = () => (
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Index />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/register" element={<RegisterForm />} />
                 
@@ -85,10 +90,10 @@ const App = () => (
                   <Route index element={<Navigate to="/admin/dashboard" replace />} />
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="products" element={<AdminProducts />} />
-                  <Route path="orders" element={<div>Orders Management (Coming Soon)</div>} />
-                  <Route path="users" element={<div>Users Management (Coming Soon)</div>} />
-                  <Route path="analytics" element={<div>Analytics (Coming Soon)</div>} />
-                  <Route path="settings" element={<div>Settings (Coming Soon)</div>} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="analytics" element={<AdminAnalytics />} />
+                  <Route path="settings" element={<AdminSettings />} />
                 </Route>
 
                 {/* Legacy route redirect */}

@@ -123,6 +123,9 @@ const AdminLayout: React.FC = () => {
               >
                 <Home className="w-4 h-4" />
                 View Store
+                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full ml-auto">
+                  Admin
+                </span>
               </Link>
               <Button
                 onClick={handleLogout}

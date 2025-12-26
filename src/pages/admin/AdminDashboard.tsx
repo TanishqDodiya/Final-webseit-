@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Package, 
@@ -169,41 +170,49 @@ const AdminDashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="cursor-pointer hover:shadow-md transition-shadow">
-          <CardContent className="flex items-center justify-center p-6">
-            <div className="text-center">
-              <Package className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm font-medium">Add Product</p>
-            </div>
-          </CardContent>
-        </Card>
+        <Link to="/admin/products">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="flex items-center justify-center p-6">
+              <div className="text-center">
+                <Package className="h-8 w-8 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">Add Product</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="cursor-pointer hover:shadow-md transition-shadow">
-          <CardContent className="flex items-center justify-center p-6">
-            <div className="text-center">
-              <ShoppingCart className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm font-medium">View Orders</p>
-            </div>
-          </CardContent>
-        </Card>
+        <Link to="/admin/orders">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="flex items-center justify-center p-6">
+              <div className="text-center">
+                <ShoppingCart className="h-8 w-8 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">View Orders</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="cursor-pointer hover:shadow-md transition-shadow">
-          <CardContent className="flex items-center justify-center p-6">
-            <div className="text-center">
-              <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm font-medium">Manage Users</p>
-            </div>
-          </CardContent>
-        </Card>
+        <Link to="/admin/users">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="flex items-center justify-center p-6">
+              <div className="text-center">
+                <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">Manage Users</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-        <Card className="cursor-pointer hover:shadow-md transition-shadow">
-          <CardContent className="flex items-center justify-center p-6">
-            <div className="text-center">
-              <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
-              <p className="text-sm font-medium">View Analytics</p>
-            </div>
-          </CardContent>
-        </Card>
+        <Link to="/admin/analytics">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="flex items-center justify-center p-6">
+              <div className="text-center">
+                <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">View Analytics</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
     </div>
   );

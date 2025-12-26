@@ -229,6 +229,31 @@
     -webkit-line-clamp: 3;
     line-clamp: 3;
   }
+
+  /* Product detail page specific styles */
+  .product-image-gallery {
+    @apply sticky top-4;
+  }
+
+  .product-thumbnail {
+    @apply transition-all duration-200 hover:scale-105;
+  }
+
+  .product-thumbnail.active {
+    @apply ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Related products grid */
+  .related-products-grid {
+    @apply grid gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    .related-products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
 }
 /* stylelint-enable at-rule-no-unknown */
 
