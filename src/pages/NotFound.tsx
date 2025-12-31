@@ -9,7 +9,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Page Not Found | ELYF EVSPARE"
+        title="Page Not Found | SHREE ASHAPURA AUTO PARTS EV"
         description="The page you're looking for doesn't exist. Browse our electric vehicle spare parts and accessories."
       />
       

@@ -105,7 +105,7 @@ const Header = ({ onSearch }: HeaderProps) => {
                 <path d="M12 2L8 6H4v4l-4 4 4 4v4h4l4 4 4-4h4v-4l4-4-4-4V6h-4L12 2zm0 4l2.5 2.5H17v2.5L19.5 12 17 14.5V17h-2.5L12 19.5 9.5 17H7v-2.5L4.5 12 7 9.5V7h2.5L12 4.5z"/>
               </svg>
             </div>
-            <span className="font-bold text-foreground text-sm sm:text-base">ELYF EVSPARE</span>
+            <span className="font-bold text-foreground text-sm sm:text-base">SHREE ASHAPURA AUTO PARTS EV</span>
           </Link>
 
           {/* Center Link - Hidden on mobile */}

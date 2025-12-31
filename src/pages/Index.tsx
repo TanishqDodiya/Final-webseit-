@@ -80,8 +80,8 @@ const Index = () => {
 
   // Dynamic SEO based on search/category
   const seoTitle = searchQuery 
-    ? `Search: ${searchQuery} | ELYF EVSPARE`
-    : `${activeCategoryName} | ELYF EVSPARE - Electric Vehicle Parts`;
+    ? `Search: ${searchQuery} | SHREE ASHAPURA AUTO PARTS EV`
+    : `${activeCategoryName} | SHREE ASHAPURA AUTO PARTS EV - Electric Vehicle Parts`;
   
   const seoDescription = searchQuery
     ? `Search results for "${searchQuery}" - Find electric vehicle spare parts, chargers, and accessories.`
@@ -212,13 +212,13 @@ const MobileCartSummary = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 shadow-lg z-40 safe-area-inset-bottom">
         <button
           onClick={() => setShowCart(true)}
-          className="w-full flex items-center justify-between bg-primary text-primary-foreground px-4 py-3 rounded-lg hover:bg-primary/90 transition-colors min-h-[44px]"
+          className="w-full flex items-center justify-between bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors min-h-[44px]"
           aria-label={`View cart with ${itemCount} items`}
         >
           <span className="font-semibold">
             {itemCount} item{itemCount !== 1 ? 's' : ''}
           </span>
-          <span className="font-bold">{formatPrice(total * 1.18)}</span>
+          <span className="font-bold">{formatPrice(total)}</span>
         </button>
       </div>
 

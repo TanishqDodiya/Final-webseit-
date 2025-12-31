@@ -1,9 +1,9 @@
 {
-  "name": "elyf-evspare",
+  "name": "shree-ashapura-auto-parts-ev",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "ELYF EVSPARE - Electric Vehicle Spare Parts E-commerce Platform",
+  "description": "SHREE ASHAPURA AUTO PARTS EV - Electric Vehicle Spare Parts E-commerce Platform",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

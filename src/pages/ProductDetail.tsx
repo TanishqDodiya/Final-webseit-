@@ -118,7 +118,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title={`${product.name} | ELYF EVSPARE`}
+        title={`${product.name} | SHREE ASHAPURA AUTO PARTS EV`}
         description={product.description || `Buy ${product.name} - Premium electric vehicle spare part. SKU: ${product.sku}. Price: ${formatPrice(product.price)}`}
         keywords={`${product.name}, ${product.sku}, ${product.brand}, electric vehicle parts, EV spare parts, ${product.tags?.join(', ')}`}
       />
@@ -284,7 +284,7 @@ const ProductDetail = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={maxQuantity === 0 || isAddingToCart}
-                  className={`flex-1 btn-checkout flex items-center justify-center gap-2 ${
+                  className={`flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2 ${
                     maxQuantity === 0 
                       ? 'opacity-50 cursor-not-allowed bg-muted text-muted-foreground' 
                       : ''

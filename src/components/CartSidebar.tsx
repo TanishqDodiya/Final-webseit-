@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Minus, Plus, X, MessageCircle } from 'lucide-react';
 import { useCart, CartItem } from '@/context/CartContext';
-import CheckoutModal from './CheckoutModal';
+import WhatsAppOrderModal from './WhatsAppOrderModal';
 
 const CartSidebar = () => {
   const { items, updateQuantity, removeFromCart, getTotal, clearCart, isLoading } = useCart();
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isWhatsAppOrderOpen, setIsWhatsAppOrderOpen] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -17,9 +17,7 @@ const CartSidebar = () => {
   };
 
   const subtotal = getTotal();
-  const gstRate = 0.18; // 18% GST for most items
-  const gst = subtotal * gstRate;
-  const total = subtotal + gst;
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   if (isLoading) {
     return (
@@ -99,38 +97,34 @@ const CartSidebar = () => {
           <div className="p-4 border-t border-border bg-muted/30">
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-foreground">{formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">GST (18%)</span>
-                <span className="text-foreground">{formatPrice(gst)}</span>
+                <span className="text-muted-foreground">Total Items</span>
+                <span className="text-foreground">{totalItems}</span>
               </div>
               <div className="flex justify-between text-base font-bold pt-2 border-t border-border">
-                <span className="text-foreground">Total</span>
-                <span className="text-foreground">{formatPrice(total)}</span>
+                <span className="text-foreground">Total Value</span>
+                <span className="text-foreground">{formatPrice(subtotal)}</span>
               </div>
             </div>
 
             <button
-              onClick={() => setIsCheckoutOpen(true)}
-              className="btn-checkout flex items-center justify-center gap-2 touch-target"
-              aria-label="Proceed to checkout"
+              onClick={() => setIsWhatsAppOrderOpen(true)}
+              className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all duration-200 min-h-[44px] flex items-center justify-center gap-2 touch-target"
+              aria-label="Order on WhatsApp"
             >
               <MessageCircle className="w-5 h-5" />
-              Request Quote
+              Order on WhatsApp
             </button>
             
             <p className="text-xs text-muted-foreground text-center mt-2">
-              Get instant quote via WhatsApp
+              Send order details directly via WhatsApp
             </p>
           </div>
         </div>
       </aside>
 
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
+      <WhatsAppOrderModal
+        isOpen={isWhatsAppOrderOpen}
+        onClose={() => setIsWhatsAppOrderOpen(false)}
       />
     </>
   );

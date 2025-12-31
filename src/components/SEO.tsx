@@ -12,7 +12,7 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({
-  title = 'ELYF EVSPARE - Premium Electric Vehicle Spare Parts & Accessories',
+  title = 'SHREE ASHAPURA AUTO PARTS EV - Premium Electric Vehicle Spare Parts & Accessories',
   description = 'Shop premium electric vehicle spare parts, EV chargers, controllers, motors, and accessories. Quality components for all your electric vehicle needs with fast delivery.',
   keywords = 'electric vehicle parts, EV chargers, lithium chargers, EV controllers, hub motors, battery packs, electric vehicle accessories',
   image = '/placeholder.svg',
@@ -20,7 +20,7 @@ const SEO: React.FC<SEOProps> = ({
   type = 'website',
   noIndex = false,
 }) => {
-  const siteTitle = 'ELYF EVSPARE';
+  const siteTitle = 'SHREE ASHAPURA AUTO PARTS EV';
   const fullTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
 
   return (
@@ -51,7 +51,7 @@ const SEO: React.FC<SEOProps> = ({
       <link rel="canonical" href={url} />
       
       {/* Additional Meta Tags */}
-      <meta name="author" content="ELYF EVSPARE" />
+      <meta name="author" content="SHREE ASHAPURA AUTO PARTS EV" />
       <meta name="theme-color" content="#2563eb" />
     </Helmet>
   );

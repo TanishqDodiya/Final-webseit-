@@ -17,7 +17,7 @@ const Footer = () => {
                   <path d="M12 2L8 6H4v4l-4 4 4 4v4h4l4 4 4-4h4v-4l4-4-4-4V6h-4L12 2zm0 4l2.5 2.5H17v2.5L19.5 12 17 14.5V17h-2.5L12 19.5 9.5 17H7v-2.5L4.5 12 7 9.5V7h2.5L12 4.5z"/>
                 </svg>
               </div>
-              <span className="font-bold text-foreground">ELYF EVSPARE</span>
+              <span className="font-bold text-foreground">SHREE ASHAPURA AUTO PARTS EV</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Premium electric vehicle spare parts and accessories. Quality components for all your EV needs.
@@ -75,8 +75,8 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
                 <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <a href="mailto:info@elyfevspare.com" className="hover:text-foreground transition-colors">
-                  info@elyfevspare.com
+                <a href="mailto:info@shreeashapuraautoparts.com" className="hover:text-foreground transition-colors">
+                  info@shreeashapuraautoparts.com
                 </a>
               </div>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -100,7 +100,7 @@ const Footer = () => {
         <div className="border-t border-border mt-8 pt-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © {currentYear} ELYF EVSPARE. All rights reserved.
+              © {currentYear} SHREE ASHAPURA AUTO PARTS EV. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <a href="#" className="hover:text-foreground transition-colors">

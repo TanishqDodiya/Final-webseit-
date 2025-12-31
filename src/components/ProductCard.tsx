@@ -100,10 +100,10 @@ const ProductCard = ({ product, stock = 10 }: ProductCardProps) => {
       <button
         onClick={handleAddToCart}
         disabled={isOutOfStock || isAdding}
-        className={`btn-add-quote flex items-center gap-1.5 flex-shrink-0 min-h-[44px] transition-all duration-200 ${
+        className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-all duration-200 flex-shrink-0 min-h-[44px] ${
           isOutOfStock 
-            ? 'opacity-50 cursor-not-allowed bg-muted text-muted-foreground' 
-            : 'hover:bg-primary/90 hover:scale-105 active:scale-95'
+            ? 'opacity-50 cursor-not-allowed bg-muted text-muted-foreground border-muted' 
+            : 'hover:scale-105 active:scale-95'
         } ${isAdding ? 'animate-pulse' : ''}`}
       >
         {isOutOfStock ? (
@@ -115,7 +115,7 @@ const ProductCard = ({ product, stock = 10 }: ProductCardProps) => {
           </>
         ) : (
           <>
-            Add to Quote
+            Add to Cart
             <Plus className="w-4 h-4" />
           </>
         )}

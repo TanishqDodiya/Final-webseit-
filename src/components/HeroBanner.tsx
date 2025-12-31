@@ -21,7 +21,7 @@ const HeroBanner = () => {
                     <path d="M12 2L8 6H4v4l-4 4 4 4v4h4l4 4 4-4h4v-4l4-4-4-4V6h-4L12 2zm0 4l2.5 2.5H17v2.5L19.5 12 17 14.5V17h-2.5L12 19.5 9.5 17H7v-2.5L4.5 12 7 9.5V7h2.5L12 4.5z"/>
                   </svg>
                 </div>
-                <h1 className="font-extrabold text-lg sm:text-xl text-foreground">ELYF EVSPARE</h1>
+                <h1 className="font-extrabold text-lg sm:text-xl text-foreground">SHREE ASHAPURA AUTO PARTS EV</h1>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed">
                 Premium Electric Vehicle Spare Parts
