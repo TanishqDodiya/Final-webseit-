@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, Minus, Star, Shield, Truck, RotateCcw, Heart } from 'lucide-react';
-import { Product, products } from '@/data/products';
+import { Product } from '@/data/products';
+import { ProductService } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,35 +14,78 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { addToCart, items } = useCart();
   
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [activeTab, setActiveTab] = useState<'description' | 'specifications' | 'reviews'>('description');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const product = useMemo(() => 
-    products.find(p => p.id === id), [id]
-  );
+  // Load product data
+  useEffect(() => {
+    const loadProduct = async () => {
+      if (!id) return;
+      
+      setIsLoading(true);
+      try {
+        const productData = await ProductService.getProductById(id);
+        if (productData) {
+          setProduct(productData);
+          
+          // Load related products
+          const related = await ProductService.getRelatedProducts(id, productData.category, 6);
+          setRelatedProducts(related);
+        } else {
+          navigate('/404', { replace: true });
+        }
+      } catch (error) {
+        console.error('Error loading product:', error);
+        navigate('/404', { replace: true });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const relatedProducts = useMemo(() => {
-    if (!product) return [];
-    return products
-      .filter(p => p.id !== product.id && p.category === product.category)
-      .slice(0, 6);
-  }, [product]);
+    loadProduct();
+  }, [id, navigate]);
 
   const currentCartItem = items.find(item => item.product.id === product?.id);
   const currentQuantity = currentCartItem?.quantity || 0;
   const maxQuantity = Math.max(0, (product?.stockQuantity || 0) - currentQuantity);
 
   useEffect(() => {
-    if (!product) {
-      navigate('/404', { replace: true });
-    }
-  }, [product, navigate]);
-
-  useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container mx-auto px-4 py-6 max-w-7xl">
+          <div className="animate-pulse">
+            <div className="h-4 bg-muted rounded w-64 mb-6"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div className="space-y-4">
+                <div className="aspect-square bg-muted rounded-lg"></div>
+                <div className="flex gap-2">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="w-20 h-20 bg-muted rounded-lg"></div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div className="h-8 bg-muted rounded w-3/4"></div>
+                <div className="h-6 bg-muted rounded w-1/2"></div>
+                <div className="h-12 bg-muted rounded w-1/3"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!product) {
     return null;

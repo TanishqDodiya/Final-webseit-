@@ -6,35 +6,59 @@ import ProductList from '@/components/ProductList';
 import CartSidebar from '@/components/CartSidebar';
 import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
-import { categories, products } from '@/data/products';
+import { Category, Product } from '@/data/products';
+import { ProductService } from '@/services/productService';
 import { useCart } from '@/context/CartContext';
 import { Menu, X } from 'lucide-react';
 
 const Index = () => {
-  const [activeCategory, setActiveCategory] = useState(categories[0].id);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [activeCategory, setActiveCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  // Simulate loading for better UX
+  // Load data from Supabase
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        const [categoriesData, productsData] = await Promise.all([
+          ProductService.getCategories(),
+          ProductService.getProducts()
+        ]);
+        
+        setCategories(categoriesData);
+        setProducts(productsData);
+        
+        // Set first category as active
+        if (categoriesData.length > 0) {
+          setActiveCategory(categoriesData[0].id);
+        }
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   const filteredProducts = useMemo(() => {
-    let result = products.filter(p => p.category === activeCategory);
-    
     if (searchQuery.trim()) {
+      // When searching, show all matching products
       const query = searchQuery.toLowerCase();
-      result = products.filter(p => 
+      return products.filter(p => 
         p.name.toLowerCase().includes(query) ||
         p.sku.toLowerCase().includes(query)
       );
     }
     
-    return result;
-  }, [activeCategory, searchQuery]);
+    // When browsing by category, filter by active category
+    return products.filter(p => p.category === activeCategory);
+  }, [products, activeCategory, searchQuery]);
 
   const activeCategoryName = useMemo(() => {
     if (searchQuery.trim()) return `Search: "${searchQuery}"`;
